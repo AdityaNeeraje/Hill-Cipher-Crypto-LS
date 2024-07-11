@@ -33,8 +33,10 @@
 import numpy as np
 from math import gcd
 
-plaintext=input("Please Enter the Plaintext: ").strip().upper()
-ciphertext=input("Please Enter the Ciphertext: ").strip().upper()
+# plaintext=input("Please Enter the Plaintext: ").strip().upper()
+# ciphertext=input("Please Enter the Ciphertext: ").strip().upper()
+plaintext="SUMSUMPLANSX"
+ciphertext="COACOAOZWJBH"
 
 def gauss_jordan_elimination(A, B):
     n = len(A)
@@ -130,7 +132,10 @@ if done:
 def solve_brute_force(row):
     for i in range(26):
         for j in range(26):
-            for k in range(26):
+            for d in range(column_number):
+                if message_matrix[d][2]%2 == 0 or message_matrix[d][2]%13 == 0:
+                    continue
+                k=((ciphertext_matrix[d][row]-i*message_matrix[d][0]-j*message_matrix[d][1])*pow(int(message_matrix[d][2]), -1, 26))%26
                 key_matrix=np.array([i, j, k])
                 result=ciphertext_matrix.T[row]
                 if np.array_equal(np.matmul(key_matrix, message_matrix.T)%26, result):
@@ -141,5 +146,5 @@ key=[]
 for row in range(3):
     key.append(solve_brute_force(row))
 key=np.array(key)
-
+print(ciphertext_matrix[2][0])
 print("".join([chr(int(round(char)) + 65) for char in key.flatten(order='C')]))
