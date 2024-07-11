@@ -130,21 +130,42 @@ if done:
 #     exit()
 
 def solve_brute_force(row):
+    result=ciphertext_matrix.T[row]
+    for c in range(column_number):
+        for r in range(3):
+            if message_matrix[c][r]%2 == 0 or message_matrix[c][r]%13 == 0:
+                continue
+            if r==0:
+                i_row=1
+                j_row=2
+            elif r==1:
+                i_row=0
+                j_row=2
+            else:
+                i_row=0
+                j_row=1
+            for i in range(26):
+                for j in range(26):
+                    k=((ciphertext_matrix[c][row]-i*message_matrix[c][i_row]-j*message_matrix[c][j_row])*pow(int(message_matrix[c][r]), -1, 26))%26
+                    if r==0:
+                        key_matrix=np.array([k, i, j])
+                    elif r==1:
+                        key_matrix=np.array([i, k, j])
+                    else:
+                        key_matrix=np.array([i, j, k])
+                    if np.array_equal(np.matmul(key_matrix, message_matrix.T)%26, result):
+                        return key_matrix
     for i in range(26):
         for j in range(26):
-            for d in range(column_number):
-                if message_matrix[d][2]%2 == 0 or message_matrix[d][2]%13 == 0:
-                    continue
-                k=((ciphertext_matrix[d][row]-i*message_matrix[d][0]-j*message_matrix[d][1])*pow(int(message_matrix[d][2]), -1, 26))%26
-                key_matrix=np.array([i, j, k])
-                result=ciphertext_matrix.T[row]
-                if np.array_equal(np.matmul(key_matrix, message_matrix.T)%26, result):
-                    return key_matrix
+                for k in range(26):
+                    key_matrix=np.array([i, j, k])
+                    if np.array_equal(np.matmul(key_matrix, message_matrix.T)%26, result):
+                        return key_matrix
+    
 
 
 key=[]
 for row in range(3):
     key.append(solve_brute_force(row))
 key=np.array(key)
-print(ciphertext_matrix[2][0])
 print("".join([chr(int(round(char)) + 65) for char in key.flatten(order='C')]))
