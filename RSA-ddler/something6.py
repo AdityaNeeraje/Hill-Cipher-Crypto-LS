@@ -1,6 +1,7 @@
 d=51628121452759765450370609827915976315
 n=69203410113561398433978337198079999737
 
+# Now find the values of the values in the input which are indexed 3 mod 4
 import sympy
 from numpy import cbrt
 

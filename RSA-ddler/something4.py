@@ -1,3 +1,4 @@
+# Now, find the values which are indexed 2 mod 4, using the value of d found by something3.py
 d=95268706894812419456021728044248918752581734930688529303215173685304012767233
 
 import sympy

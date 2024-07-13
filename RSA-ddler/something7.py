@@ -1,6 +1,7 @@
 d=51628121452759765450370609827915976315
 n=69203410113561398433978337198079999737
 
+# Turns out the values in the indices which are 0 modulo 4 are not changed at all by the encryption. Makes life easy for us, so yay
 import sympy
 from numpy import cbrt
 
