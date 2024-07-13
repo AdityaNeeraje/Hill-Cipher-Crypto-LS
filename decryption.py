@@ -33,10 +33,10 @@
 import numpy as np
 from math import gcd
 
-# plaintext=input("Please Enter the Plaintext: ").strip().upper()
-# ciphertext=input("Please Enter the Ciphertext: ").strip().upper()
-plaintext="SUMSUMPLANSX"
-ciphertext="COACOAOZWJBH"
+plaintext=input("Please Enter the Plaintext: ").strip().upper()
+ciphertext=input("Please Enter the Ciphertext: ").strip().upper()
+# plaintext="SUMSUMPLANSX"
+# ciphertext="COACOAOZWJBH"
 
 def gauss_jordan_elimination(A, B):
     n = len(A)
@@ -94,8 +94,9 @@ for i in range(column_number):
     if done:
         break
 if done:
-    key="".join([chr(int(round(char)) + 65) for char in np.array(key.flatten(order='C'))[0]])
     print(key)
+    key="".join([chr(int(round(char)) + 65) for char in np.array(key.flatten(order='C'))[0]])
+    # print(key)
     exit()
 
 # for i in range(column_number):
