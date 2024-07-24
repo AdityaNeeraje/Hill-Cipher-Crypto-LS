@@ -1,13 +1,21 @@
-# import the necessary libraries here
-from Crypto.Cipher import AES
 import Crypto
 from Crypto.Random import random
 import Crypto.Random
-from Crypto.Random.random import randrange
-from Crypto.Random.random import getrandbits
 from Crypto.Util.number import bytes_to_long, long_to_bytes
-from random import randbytes
 import random
+
+def modularExponentiation(a, b, n, tot=0):
+    if tot!=0 and b == -1:
+        return modularExponentiation(a, tot-1, n)
+    b=b%n
+    a=a%n
+    if b == 0:
+        return 1
+    if b == 1:
+        return a%n
+    if b%2 == 0:
+        return modularExponentiation(a*a, b//2, n)
+    return (a*modularExponentiation(a*a, b//2, n))%n
 
 class RSA:
     """Implements the RSA public key encryption / decryption."""
@@ -25,9 +33,11 @@ class RSA:
 
     def encrypt(self, binary_data):
         int_data = bytes_to_long(binary_data)
-        return pow(int_data, self.e, self.n)
-
+        result= pow(int_data, self.e, self.n)
+        return result
+    
     def decrypt(self, encrypted_int_data):
+        result= pow(encrypted_int_data, self.d, self.n)
         return long_to_bytes(pow(encrypted_int_data, self.d, self.n)).decode()
 
 class RSAParityOracle(RSA):
@@ -45,10 +55,8 @@ def parity_oracle_attack(ciphertext, rsa_parity_oracle):
     left=0
     right=n-1
     mid=(left+right)//2
-    index=0
     power=pow(2, rsa_parity_oracle.e, n)
     while left < right:
-        index+=1
         mid=(left+right)//2
         ciphertext*=power
         ciphertext%=n
@@ -56,7 +64,6 @@ def parity_oracle_attack(ciphertext, rsa_parity_oracle):
             left=mid+1
         else:
             right=mid
-    # return left
     return long_to_bytes(left).decode()
 
 def main():
@@ -74,7 +81,6 @@ def main():
 
     # Check if the attack works
     plaintext = parity_oracle_attack(ciphertext, rsa_parity_oracle)
-    # print(plaintext-bytes_to_long(encoded_message))
     print("Obtained plaintext: ",plaintext)
     # assert plaintext == input_bytes.encode()
 
