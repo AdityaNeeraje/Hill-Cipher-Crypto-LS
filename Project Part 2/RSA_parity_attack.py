@@ -34,6 +34,7 @@ class RSA:
 
     def encrypt(self, binary_data):
         int_data = bytes_to_long(binary_data)
+        int_data %= self.n
         return pow(int_data, self.e, self.n)
 
     def decrypt(self, encrypted_int_data):
@@ -65,7 +66,7 @@ def parity_oracle_attack(ciphertext, rsa_parity_oracle):
             left = mid + 1
         else:
             right = mid
-    for i in range(max(0, left - 20), left + 20):
+    for i in range(max(0, left - 1000), left + 1000):
         if pow(i, rsa_parity_oracle.e, n) == original_ciphertext:
             return long_to_bytes(i).decode()
     return None
