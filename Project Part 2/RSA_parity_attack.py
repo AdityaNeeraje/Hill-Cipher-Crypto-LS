@@ -76,6 +76,7 @@ def main():
     assert len(sys.argv) == 2
     input_bytes = sys.argv[1]
     encoded_message = input_bytes.encode()
+
     # Generate a 1024-bit RSA pair    
     rsa_parity_oracle = RSAParityOracle(1024)
     # Encrypt the message
