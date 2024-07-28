@@ -2,6 +2,7 @@
 
 for i in {250..1};
 do
+    echo $i
     random_string=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w $i | head -n 1)
     result=$(python3 RSA_parity_attack.py $random_string)
     exit_code=$?
